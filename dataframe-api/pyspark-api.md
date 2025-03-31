@@ -8,7 +8,7 @@ Returns: Column
       Requested column.
 Examples:
 ```
-  df = spark.createDataFrame([
+df = spark.createDataFrame([
     (2, "Alice"), (5, "Bob")], schema=["age", "name"])
 df.select(df.age).show()
 ```
