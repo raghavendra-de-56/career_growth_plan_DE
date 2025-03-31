@@ -2,7 +2,7 @@ Apache Spark is a distributed computing framework optimized for big data process
 
 ## Spark Architecture Overview
 
-🔹 Spark Components
+# Spark Components
 
 1. Driver Program:
   The main entry point for Spark applications.
