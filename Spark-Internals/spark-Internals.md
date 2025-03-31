@@ -45,12 +45,12 @@ Apache Spark is a distributed computing framework optimized for big data process
 
 
 Example DAG for a Spark Job
-
+```
 df = spark.read.csv("data.csv")  # Stage 1: Read data
 df = df.filter(df["col1"] > 100)  # Stage 2: Filter transformation (lazy)
 df = df.groupBy("col2").count()  # Stage 3: GroupBy (causes shuffle)
 df.show()  # Action triggers execution
-
+```
 ### DAG Optimization:
 
 1. Stage Splitting: Divides DAG into narrow and wide transformations.
@@ -69,13 +69,11 @@ Spark SQL’s query optimizer that improves performance by:
   4. Cost-based optimizations
 
 Example: Analyzing a Query Plan
-
+```
 df = spark.read.parquet("data.parquet")
-
 df_filtered = df.filter(df["col1"] > 100)
-
 df_filtered.explain(True)  # Shows Optimized Execution Plan
-
+```
 Execution Plan Breakdown
 
 == Physical Plan ==
@@ -114,14 +112,14 @@ Shuffle can be expensive due to network & disk I/O.
 #### How to Reduce Shuffle?
 
 1. Use Broadcast Joins for Small Tables
-
+```
 from pyspark.sql.functions import broadcast
 df_large.join(broadcast(df_small), "id")  # Avoids shuffle
-
+```
 2. Optimize Partitioning
-
+```
 df = df.repartition(10, "col1")  # Repartition based on a column
-
+```
 Broadcast Joins Optimization
 
 1. Spark shuffles data for large joins, causing slowness.
@@ -129,13 +127,12 @@ Broadcast Joins Optimization
 
 
 🔹 Example: Optimized Join Using Broadcast
-
+```
 from pyspark.sql.functions import broadcast
 df_large = spark.read.parquet("large_data.parquet")
 df_small = spark.read.parquet("small_lookup.parquet")
-
 df_optimized = df_large.join(broadcast(df_small), "id")  # Avoids shuffle
-
+```
 #### Spark Storage Levels (Cache & Persist)
 
 Cache vs. Persist
@@ -145,13 +142,14 @@ Cache vs. Persist
 .persist(StorageLevel): Allows fine-grained control (MEMORY_AND_DISK, DISK_ONLY, etc.).
 
 Example: Using Cache & Persist
-
+```
 df_cached = df.cache()
 df_cached.count()  # Materializes cache
-
+```
+```
 df_persisted = df.persist()
 df_persisted.count()
-
+```
  Storage Levels | Storage Level| Memory | Disk | Serialized | 
  
  |----------------------  |--------|------|------------| 
@@ -190,4 +188,6 @@ Avoid slow UDFs
 def text_length(text):
     return len(text)
 ```
+```
 df = df.withColumn("text_length", length(df["text"]))  # Optimized
+```
