@@ -98,7 +98,7 @@ Column Pruning: Only loads required columns to save memory.
 4. Cache-Aware Computations → Uses CPU registers efficiently.
 
 
-### Spark Shuffling & Partitioning
+### Spark Shuffling & Partitioning:
 
 #### What is Shuffling?
 
