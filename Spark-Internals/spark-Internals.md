@@ -97,6 +97,8 @@ Column Pruning: Only loads required columns to save memory.
 1. Binary Processing: Data is stored in binary format (not JVM objects).
 2. Bytecode Generation: Converts queries into Java bytecode at runtime.
 3. Off-Heap Memory: Reduces JVM garbage collection overhead.
+4. Cache-Aware Computations → Uses CPU registers efficiently.
+
 
 ### Spark Shuffling & Partitioning
 
@@ -119,6 +121,20 @@ df_large.join(broadcast(df_small), "id")  # Avoids shuffle
 2. Optimize Partitioning
 
 df = df.repartition(10, "col1")  # Repartition based on a column
+
+Broadcast Joins Optimization
+
+1. Spark shuffles data for large joins, causing slowness.
+2. Use broadcast() when joining a small lookup table to avoid shuffle.
+
+
+🔹 Example: Optimized Join Using Broadcast
+
+from pyspark.sql.functions import broadcast
+df_large = spark.read.parquet("large_data.parquet")
+df_small = spark.read.parquet("small_lookup.parquet")
+
+df_optimized = df_large.join(broadcast(df_small), "id")  # Avoids shuffle
 
 #### Spark Storage Levels (Cache & Persist)
 
