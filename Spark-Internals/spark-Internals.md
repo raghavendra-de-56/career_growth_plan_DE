@@ -6,13 +6,11 @@ Apache Spark is a distributed computing framework optimized for big data process
 
 #### Driver Program:
   The main entry point for Spark applications.
-  
   It submits jobs, distributes tasks, and monitors execution.
   
 #### Cluster Manager:
 
   Manages resource allocation (CPU, memory) across worker nodes.
-  
   Can be YARN, Kubernetes, Mesos, or Standalone.
 
 #### Executor:
