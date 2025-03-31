@@ -137,10 +137,15 @@ df_persisted = df.persist()
 df_persisted.count()
 
  Storage Levels | Storage Level| Memory | Disk | Serialized | 
+ 
  |----------------------  |--------|------|------------| 
+ 
  | MEMORY_ONLY            | ✅     | ❌   | ❌         | 
+ 
  | MEMORY_AND_DISK        | ✅     | ✅   | ❌         | 
+ 
  | MEMORY_ONLY_SER        | ✅     | ❌   | ✅         | 
+ 
  | DISK_ONLY              | ❌     | ✅   | ✅         |
 
 #### Spark File Formats & Optimization
