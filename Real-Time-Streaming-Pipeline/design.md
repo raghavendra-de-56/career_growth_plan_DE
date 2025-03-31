@@ -90,8 +90,11 @@ df_alerts.writeStream.outputMode("append").format("console").start()
 Key Features:
 
 ✅ Reads data from Kafka in real time.
+
 ✅ Parses the JSON payload and extracts relevant fields.
+
 ✅ Filters high-temperature events (above 70°C).
+
 ✅ Streams alerts to the console for monitoring.
 
 ### Writing Processed Data to Delta Lake
@@ -162,7 +165,10 @@ Use Apache Flink or Kubernetes for high-throughput scenarios.
 ### Summary
 
 ✅ Built a real-time Spark Streaming pipeline for IoT sensor data.
+
 ✅ Connected Spark with Kafka for real-time ingestion.
+
 ✅ Stored processed data in Delta Lake for historical analysis.
+
 ✅ Implemented real-world use cases like anomaly detection and alerting.
 
