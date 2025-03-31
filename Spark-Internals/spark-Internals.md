@@ -97,3 +97,14 @@ Column Pruning: Only loads required columns to save memory.
 1. Binary Processing: Data is stored in binary format (not JVM objects).
 2. Bytecode Generation: Converts queries into Java bytecode at runtime.
 3. Off-Heap Memory: Reduces JVM garbage collection overhead.
+
+### Spark Shuffling & Partitioning
+
+#### What is Shuffling?
+
+Shuffle happens when data moves across nodes, typically in:
+1. GroupBy operations
+2. Joins (except Broadcast joins)
+3. Repartitioning
+
+Shuffle can be expensive due to network & disk I/O.
