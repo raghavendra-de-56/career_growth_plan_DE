@@ -207,3 +207,118 @@ Key Takeaways:
 
 1. Observe logical & physical execution plans.
 2. Check how Spark optimizes lazy transformations.
+
+
+## Catalyst Optimizer & Predicate Pushdown
+
+Goal: Optimize queries using predicate pushdown.
+
+Exercise 2: Predicate Pushdown in Parquet
+```
+df = spark.read.parquet("/databricks-datasets/nyctaxi/tripdata/parquet/")
+df_filtered = df.filter(df["passenger_count"] > 2)
+
+df_filtered.explain(True)  # Check predicate pushdown
+df_filtered.show()
+```
+Key Takeaways:
+
+1. Look for "PushedFilters" in the explain output.
+2. Predicate pushdown reduces data read size.
+
+## Shuffle Optimization with Broadcast Joins
+
+Goal: Use broadcast joins to reduce shuffle.
+
+Exercise 3: Broadcast Join Example
+```
+from pyspark.sql.functions import broadcast
+
+df_large = spark.range(1, 100000000).withColumnRenamed("id", "large_id")  # Large Dataset
+df_small = spark.range(1, 1000).withColumnRenamed("id", "small_id")  # Small Dataset
+
+# Without Broadcast - Causes Shuffle
+df_joined = df_large.join(df_small, df_large.large_id == df_small.small_id)
+df_joined.explain(True)  # Check if shuffle happens
+
+# With Broadcast - Avoids Shuffle
+df_broadcasted = df_large.join(broadcast(df_small), df_large.large_id == df_small.small_id)
+df_broadcasted.explain(True)  # Check if shuffle is avoided
+```
+Key Takeaways:
+
+1. Check BroadcastHashJoin in explain(), indicating shuffle avoidance.
+
+## Partitioning for Performance Optimization
+
+Goal: Improve query performance using partitioning.
+
+Exercise 4: Repartitioning Data
+```
+df = spark.range(1, 1000000).withColumnRenamed("id", "value")
+
+# Default Partition Count
+print(df.rdd.getNumPartitions())
+
+# Increase Partitions (More Parallelism)
+df_repartitioned = df.repartition(10)  # Increase partitions
+print(df_repartitioned.rdd.getNumPartitions())
+
+# Write Data with Partitioning
+df.write.partitionBy("value").parquet("/tmp/partitioned_data")
+```
+Key Takeaways:
+1. Increasing partitions can improve parallelism (but avoid too many).
+2. Partitioning large tables reduces scan time.
+
+## Tungsten Engine & Memory Optimization
+
+Goal: Experiment with cache vs persist for memory management.
+
+Exercise 5: Cache vs Persist Performance
+
+from pyspark.storagelevel import StorageLevel
+```
+df = spark.range(1, 50000000).withColumnRenamed("id", "value")
+
+# Cache (Stored in Memory)
+df_cached = df.cache()
+df_cached.count()  # Triggers caching
+
+# Persist (Stored in Memory & Disk)
+df_persisted = df.persist(StorageLevel.MEMORY_AND_DISK)
+df_persisted.count()  # Triggers persistence
+```
+Key Takeaways:
+1. Compare performance differences between cache & persist.
+2. Use .persist(StorageLevel.DISK_ONLY) for large datasets.
+
+## File Formats & Read Performance
+
+Goal: Compare CSV vs Parquet performance.
+
+Exercise 6: CSV vs Parquet Speed Test
+```
+import time
+
+df = spark.range(1, 1000000).withColumnRenamed("id", "value")
+
+# Write Data in CSV & Parquet
+df.write.mode("overwrite").csv("/tmp/data_csv")
+df.write.mode("overwrite").parquet("/tmp/data_parquet")
+
+# Read CSV & Measure Time
+start_time = time.time()
+df_csv = spark.read.csv("/tmp/data_csv", inferSchema=True, header=True)
+df_csv.count()
+print("CSV Read Time:", time.time() - start_time)
+
+# Read Parquet & Measure Time
+start_time = time.time()
+df_parquet = spark.read.parquet("/tmp/data_parquet")
+df_parquet.count()
+print("Parquet Read Time:", time.time() - start_time)
+```
+Key Takeaways:
+1. Parquet is faster because of columnar storage.
+2. CSV needs schema inference, slowing down reads.
