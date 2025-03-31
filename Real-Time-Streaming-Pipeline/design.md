@@ -77,7 +77,7 @@ df_stream = (
     .option("startingOffsets", "latest")  # Read only new messages
     .load()
 )
-```
+
 # Deserialize JSON messages
 df_parsed = df_stream.selectExpr("CAST(value AS STRING) as json").select(from_json(col("json"), iot_schema).alias("data")).select("data.*")
 
@@ -86,7 +86,7 @@ df_alerts = df_parsed.filter(df_parsed["temperature"] > 70)
 
 # Write alerts to console in real time
 df_alerts.writeStream.outputMode("append").format("console").start()
-
+```
 Key Features:
 
 ✅ Reads data from Kafka in real time.
