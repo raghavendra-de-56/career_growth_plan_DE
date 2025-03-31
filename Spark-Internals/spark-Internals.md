@@ -93,7 +93,9 @@ Spark SQL’s query optimizer that improves performance by:
 Example: Analyzing a Query Plan
 
 df = spark.read.parquet("data.parquet")
+
 df_filtered = df.filter(df["col1"] > 100)
+
 df_filtered.explain(True)  # Shows Optimized Execution Plan
 
 Execution Plan Breakdown
