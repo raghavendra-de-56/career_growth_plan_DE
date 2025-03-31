@@ -6,6 +6,7 @@ Parameters:name : str
 Column name to return as Column.
 Returns: Column
       Requested column.
+      
 Examples:
 ```
 df = spark.createDataFrame([
