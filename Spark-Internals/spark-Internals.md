@@ -5,31 +5,28 @@ Apache Spark is a distributed computing framework optimized for big data process
 ### Spark Components
 
 #### Driver Program:
-  The main entry point for Spark applications.
-  It submits jobs, distributes tasks, and monitors execution.
+  1. The main entry point for Spark applications.
+  2. It submits jobs, distributes tasks, and monitors execution.
   
 #### Cluster Manager:
 
-  Manages resource allocation (CPU, memory) across worker nodes.
-  Can be YARN, Kubernetes, Mesos, or Standalone.
+  1. Manages resource allocation (CPU, memory) across worker nodes.
+  2. Can be YARN, Kubernetes, Mesos, or Standalone.
 
 #### Executor:
 
-  Runs on worker nodes and executes tasks.
-  
-  Each executor has its own memory and caches data locally.
+  1. Runs on worker nodes and executes tasks.
+  2. Each executor has its own memory and caches data locally.
 
 #### Task:
 
-  A unit of execution sent to an executor.
-  
-  Multiple tasks form a stage, and multiple stages form a job.
+  1. A unit of execution sent to an executor.
+  2. Multiple tasks form a stage, and multiple stages form a job.
 
 #### RDD (Resilient Distributed Dataset):
 
-  Spark’s fundamental immutable distributed data structure.
-  
-  Supports transformations (map, filter) and actions (count, collect).
+  1. Spark’s fundamental immutable distributed data structure.
+  2. Supports transformations (map, filter) and actions (count, collect).
 
 ### Architecture Flow:
 
@@ -42,11 +39,9 @@ Apache Spark is a distributed computing framework optimized for big data process
 
 ### Spark Execution Flow:
 
-DAG (Directed Acyclic Graph)
-
-Spark lazily evaluates transformations and builds a DAG before execution.
-
-DAG helps optimize execution by reordering operations and reducing shuffles.
+1. DAG (Directed Acyclic Graph)
+2. Spark lazily evaluates transformations and builds a DAG before execution.
+3. DAG helps optimize execution by reordering operations and reducing shuffles.
 
 
 Example DAG for a Spark Job
@@ -59,24 +54,19 @@ df.show()  # Action triggers execution
 ### DAG Optimization:
 
 1. Stage Splitting: Divides DAG into narrow and wide transformations.
-
 2. Pipeline Execution: Executes multiple operations in a single stage.
-
 3. Shuffle Optimization: Reduces expensive data movement between nodes.
 
-Catalyst Optimizer
+#### Catalyst Optimizer
 
 What is Catalyst Optimizer?
 
 Spark SQL’s query optimizer that improves performance by:
 
-  Reordering joins
-  
-  Predicate pushdown
-  
-  Column pruning
-  
-  Cost-based optimizations
+  1. Reordering joins
+  2. Predicate pushdown
+  3. Column pruning
+  4. Cost-based optimizations
 
 Example: Analyzing a Query Plan
 
@@ -100,14 +90,10 @@ Column Pruning: Only loads required columns to save memory.
 
 #### What is Tungsten?
 
-Spark’s memory management engine that optimizes CPU efficiency.
-
-Uses off-heap memory, cache-aware computation, and bytecode generation.
+1. Spark’s memory management engine that optimizes CPU efficiency.
+2. Uses off-heap memory, cache-aware computation, and bytecode generation.
 
 #### Tungsten Features
-
-  1. Binary Processing: Data is stored in binary format (not JVM objects).
-  
-  2. Bytecode Generation: Converts queries into Java bytecode at runtime.
-  
-  3. Off-Heap Memory: Reduces JVM garbage collection overhead.
+1. Binary Processing: Data is stored in binary format (not JVM objects).
+2. Bytecode Generation: Converts queries into Java bytecode at runtime.
+3. Off-Heap Memory: Reduces JVM garbage collection overhead.
