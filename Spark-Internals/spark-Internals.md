@@ -202,7 +202,7 @@ df_filtered = df.filter(df["value"] % 2 == 0)  # Filter even numbers
 
 df_filtered.explain(True)  # Show Execution Plan
 df_filtered.count()  # Action triggers execution
-``
+```
 Key Takeaways:
 
 1.Observe logical & physical execution plans.
