@@ -205,5 +205,5 @@ df_filtered.count()  # Action triggers execution
 ```
 Key Takeaways:
 
-1.Observe logical & physical execution plans.
+1. Observe logical & physical execution plans.
 2. Check how Spark optimizes lazy transformations.
