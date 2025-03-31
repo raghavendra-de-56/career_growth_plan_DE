@@ -167,9 +167,9 @@ df_persisted.count()
 Best File Formats for Spark
 
 Convert CSV to Parquet
-
+```
 df.write.mode("overwrite").parquet("data.parquet")
-
+```
 #### Avoiding Performance Bottlenecks
 
 Avoiding UDFs (User-Defined Functions)
@@ -180,14 +180,12 @@ Use Spark’s built-in functions instead of UDFs whenever possible.
 
 Example: Avoid UDFs & Use Built-in Functions
 
-from pyspark.sql.functions import length
 
 Avoid slow UDFs
 
 ```
+from pyspark.sql.functions import length
 def text_length(text):
     return len(text)
-```
-```
 df = df.withColumn("text_length", length(df["text"]))  # Optimized
 ```
