@@ -189,3 +189,21 @@ def text_length(text):
     return len(text)
 df = df.withColumn("text_length", length(df["text"]))  # Optimized
 ```
+
+## Understanding DAG & Execution Plan
+
+Goal: Visualize the DAG and analyze query execution plans.
+
+Exercise 1: Basic DAG Execution
+```
+df = spark.range(1, 1000000)  # Create a DataFrame with 1M rows
+df = df.withColumnRenamed("id", "value")
+df_filtered = df.filter(df["value"] % 2 == 0)  # Filter even numbers
+
+df_filtered.explain(True)  # Show Execution Plan
+df_filtered.count()  # Action triggers execution
+``
+Key Takeaways:
+
+1.Observe logical & physical execution plans.
+2. Check how Spark optimizes lazy transformations.
