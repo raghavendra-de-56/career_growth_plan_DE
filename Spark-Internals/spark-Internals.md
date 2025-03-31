@@ -108,3 +108,31 @@ Shuffle happens when data moves across nodes, typically in:
 3. Repartitioning
 
 Shuffle can be expensive due to network & disk I/O.
+
+#### How to Reduce Shuffle?
+
+1. Use Broadcast Joins for Small Tables
+
+from pyspark.sql.functions import broadcast
+df_large.join(broadcast(df_small), "id")  # Avoids shuffle
+
+2. Optimize Partitioning
+
+df = df.repartition(10, "col1")  # Repartition based on a column
+
+#### Spark Storage Levels (Cache & Persist)
+
+Cache vs. Persist
+
+.cache(): Stores DataFrame only in memory.
+
+.persist(StorageLevel): Allows fine-grained control (MEMORY_AND_DISK, DISK_ONLY, etc.).
+
+Example: Using Cache & Persist
+
+df_cached = df.cache()
+df_cached.count()  # Materializes cache
+
+df_persisted = df.persist()
+df_persisted.count()
+
