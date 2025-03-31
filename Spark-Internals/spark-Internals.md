@@ -107,3 +107,19 @@ Scan parquet data    -- Column Pruning
 Predicate Pushdown: Filters applied before reading data, reducing I/O.
 
 Column Pruning: Only loads required columns to save memory.
+
+### Tungsten Engine
+
+#### What is Tungsten?
+
+Spark’s memory management engine that optimizes CPU efficiency.
+
+Uses off-heap memory, cache-aware computation, and bytecode generation.
+
+#### Tungsten Features
+
+  1. Binary Processing: Data is stored in binary format (not JVM objects).
+  
+  2. Bytecode Generation: Converts queries into Java bytecode at runtime.
+  
+  3. Off-Heap Memory: Reduces JVM garbage collection overhead.
