@@ -187,7 +187,6 @@ from pyspark.sql.functions import length
 Avoid slow UDFs
 
 def text_length(text):
-
     return len(text)
 
 df = df.withColumn("text_length", length(df["text"]))  # Optimized
