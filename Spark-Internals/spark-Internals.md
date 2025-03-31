@@ -68,7 +68,7 @@ df = df.filter(df["col1"] > 100)  # Stage 2: Filter transformation (lazy)
 df = df.groupBy("col2").count()  # Stage 3: GroupBy (causes shuffle)
 df.show()  # Action triggers execution
 
-DAG Optimization
+### DAG Optimization:
 
 1. Stage Splitting: Divides DAG into narrow and wide transformations.
 
@@ -76,3 +76,32 @@ DAG Optimization
 
 3. Shuffle Optimization: Reduces expensive data movement between nodes.
 
+Catalyst Optimizer
+
+What is Catalyst Optimizer?
+
+Spark SQL’s query optimizer that improves performance by:
+
+  Reordering joins
+  
+  Predicate pushdown
+  
+  Column pruning
+  
+  Cost-based optimizations
+
+Example: Analyzing a Query Plan
+
+df = spark.read.parquet("data.parquet")
+df_filtered = df.filter(df["col1"] > 100)
+df_filtered.explain(True)  # Shows Optimized Execution Plan
+
+Execution Plan Breakdown
+
+== Physical Plan ==
+Filter (col1 > 100)  -- Predicate Pushdown
+Scan parquet data    -- Column Pruning
+
+Predicate Pushdown: Filters applied before reading data, reducing I/O.
+
+Column Pruning: Only loads required columns to save memory.
