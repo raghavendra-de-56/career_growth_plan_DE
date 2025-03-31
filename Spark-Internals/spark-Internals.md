@@ -12,4 +12,5 @@ It submits jobs, distributes tasks, and monitors execution.
 2. Cluster Manager:
 
 Manages resource allocation (CPU, memory) across worker nodes.
+
 Can be YARN, Kubernetes, Mesos, or Standalone.
