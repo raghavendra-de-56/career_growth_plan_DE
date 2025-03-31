@@ -33,3 +33,21 @@ Apache Spark is a distributed computing framework optimized for big data process
   
   Supports transformations (map, filter) and actions (count, collect).
 
+### Architecture Flow:
+
+  1. Driver creates an RDD and triggers an action.
+  
+  
+  2. SparkContext translates this into a DAG (Directed Acyclic Graph).
+  
+  
+  3. DAG Scheduler breaks the DAG into stages.
+  
+  
+  4. Task Scheduler assigns tasks to executors.
+  
+  
+  5. Executors execute tasks in parallel and store intermediate data.
+  
+  
+  6. Final output is sent back to the driver.
