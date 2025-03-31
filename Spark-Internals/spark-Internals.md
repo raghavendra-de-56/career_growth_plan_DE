@@ -51,3 +51,30 @@ Apache Spark is a distributed computing framework optimized for big data process
   
   
   6. Final output is sent back to the driver.
+
+### Spark Execution Flow
+
+🔹 DAG (Directed Acyclic Graph)
+
+Spark lazily evaluates transformations and builds a DAG before execution.
+
+DAG helps optimize execution by reordering operations and reducing shuffles.
+
+
+🔹 Example DAG for a Spark Job
+
+df = spark.read.csv("data.csv")  # Stage 1: Read data
+df = df.filter(df["col1"] > 100)  # Stage 2: Filter transformation (lazy)
+df = df.groupBy("col2").count()  # Stage 3: GroupBy (causes shuffle)
+df.show()  # Action triggers execution
+
+🔹 DAG Optimization
+
+1. Stage Splitting: Divides DAG into narrow and wide transformations.
+
+
+2. Pipeline Execution: Executes multiple operations in a single stage.
+
+
+3. Shuffle Optimization: Reduces expensive data movement between nodes.
+
