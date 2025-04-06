@@ -6,6 +6,15 @@
 1. **What is data skew and how does it impact Spark jobs?**
    - *Follow-up:* What are two ways to mitigate skew in joins?
 
+Data skew occurs when some keys in a join or aggregation are significantly more frequent than others, leading to uneven partition sizes.
+Impact: Spark tasks processing skewed partitions take much longer, causing overall job slowdown or even failure due to out-of-memory errors.
+
+Mitigation Techniques:
+
+Salting: Add a random prefix or suffix to skewed keys to distribute them across partitions.
+
+Broadcast Join: Use when the other table is small enough (typically <100MB) to avoid shuffle.
+
 2. **Explain the difference between `merge` and `insert overwrite` in Delta Lake.**
    - *Which one is better for CDC (Change Data Capture) use cases?*
 
