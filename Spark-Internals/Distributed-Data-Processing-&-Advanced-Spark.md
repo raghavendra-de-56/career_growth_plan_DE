@@ -10,144 +10,77 @@ Main Focus Areas:
 4. Scalable orchestration of data pipelines
 5. Hands-on project reflecting real business use cases
 
+### Spark Performance Optimization – Deep Dive
 
-
-
----
-
-1️⃣ Spark Performance Optimization – Deep Dive
-
-Why it Matters:
-
+#### Why it Matters:
 Interviewers often ask how you handle performance issues in large-scale pipelines. Showing knowledge of Spark internals and tuning indicates seniority.
-
-Key Concepts:
-
+#### Key Concepts:
 Partitioning vs. Bucketing
+1. Partitioning splits data across physical files (used by Spark and storage layer).
+2. Bucketing helps optimize joins by pre-sorting data into buckets based on a key.
 
-Partitioning splits data across physical files (used by Spark and storage layer).
-
-Bucketing helps optimize joins by pre-sorting data into buckets based on a key.
-
-
-Catalyst Optimizer
-
-Logical and physical plan optimizations.
-
+#### Catalyst Optimizer
+1. Logical and physical plan optimizations.
 df.explain(True) shows the transformations Spark applies before execution.
 
+#### Tungsten Execution Engine
+1. Improves memory use with off-heap storage.
+2. Whole-stage code generation for fast query execution.
 
-Tungsten Execution Engine
+#### Shuffles & Join Strategies
+1. Expensive in terms of disk + network IO.
+2. Avoid shuffleHashJoin unless necessary.
+3. Use broadcast joins for small dimension tables.
+   
+#### Spark UI Analysis
 
-Improves memory use with off-heap storage.
+1. Use Spark UI to analyze slow jobs (look for stages with long GC, spills, skewed tasks).
 
-Whole-stage code generation for fast query execution.
+### Handling Data Skew in Real Pipelines
 
-
-Shuffles & Join Strategies
-
-Expensive in terms of disk + network IO.
-
-Avoid shuffleHashJoin unless necessary.
-
-Use broadcast joins for small dimension tables.
-
-
-Spark UI Analysis
-
-Use Spark UI to analyze slow jobs (look for stages with long GC, spills, skewed tasks).
-
-
-
----
-
-2️⃣ Handling Data Skew in Real Pipelines
-
-Scenario:
-
+#### Scenario:
 A single customer generates 60% of your order data. During joins, a single executor gets overloaded and slows down the whole job.
+#### Techniques:
+1. Salting: Add a random number to the skewed key and replicate the join keys to spread the load.
+2. Broadcast joins: When one dataset is small, you can broadcast it to all executors.
+3. Repartitioning: Use .repartition() to evenly distribute data across partitions.
 
-Techniques:
+#### Hands-On:
 
-Salting: Add a random number to the skewed key and replicate the join keys to spread the load.
+1. Simulate skew with lit("customer_1")
+2. Add a salt column using rand()
+3. Reconstruct join keys with concat_ws()
 
-Broadcast joins: When one dataset is small, you can broadcast it to all executors.
+### Delta Lake Internals & Advanced Features
 
-Repartitioning: Use .repartition() to evenly distribute data across partitions.
-
-
-Hands-On:
-
-Simulate skew with lit("customer_1")
-
-Add a salt column using rand()
-
-Reconstruct join keys with concat_ws()
-
-
-
----
-
-3️⃣ Delta Lake Internals & Advanced Features
-
-Why it Matters:
-
+#### Why it Matters:
 Delta Lake is foundational to many production-grade Lakehouse architectures (especially in Databricks).
-
-Concepts to Master:
-
+#### Concepts to Master:
 Transaction Log
-
-Stored at _delta_log/, consists of JSON + Parquet checkpoints.
-
-Guarantees ACID properties using optimistic concurrency control.
-
-
+1. Stored at _delta_log/, consists of JSON + Parquet checkpoints.
+2. Guarantees ACID properties using optimistic concurrency control.
 Time Travel
-
-Access historical versions using:
-
-df = spark.read.format("delta").option("versionAsOf", 2).load(path)
-
-
+1. Access historical versions using:
+```df = spark.read.format("delta").option("versionAsOf", 2).load(path)```
 Merge (Upserts)
-
-Use DeltaTable API to do MERGE (update if matched, insert otherwise).
-
-Schema evolution support with mergeSchema = true.
-
-
+1. Use DeltaTable API to do MERGE (update if matched, insert otherwise).
+2. Schema evolution support with mergeSchema = true.
 OPTIMIZE + ZORDER
+1. OPTIMIZE compacts small files.
+2. ZORDER helps skip irrelevant files during read (especially for filtering on common keys).
 
-OPTIMIZE compacts small files.
+### Orchestration Patterns (Databricks Workflows + Airflow)
 
-ZORDER helps skip irrelevant files during read (especially for filtering on common keys).
-
-
-
----
-
-4️⃣ Orchestration Patterns (Databricks Workflows + Airflow)
-
-Why it Matters:
-
+#### Why it Matters:
 As a Staff Engineer, you're expected to define how pipelines are triggered, monitored, and recovered.
-
 What to Learn:
+1. Databricks Workflows: Built-in scheduler for jobs using notebooks or scripts.
+2. Airflow DAGs:
+   1. Declarative pipeline orchestration (common at many companies).
+   2. Error handling: Use retries, failure hooks, alerting (Slack/email).
+   3. Parameterization: Passing parameters to tasks (e.g., file dates, environment toggles).
 
-Databricks Workflows: Built-in scheduler for jobs using notebooks or scripts.
-
-Airflow DAGs: Declarative pipeline orchestration (common at many companies).
-
-Error handling: Use retries, failure hooks, alerting (Slack/email).
-
-Parameterization: Passing parameters to tasks (e.g., file dates, environment toggles).
-
-
-
----
-
-5️⃣ Real-World Project for Hands-On Practice
+### Real-World Project for Hands-On Practice
 
 Use Case:
 
