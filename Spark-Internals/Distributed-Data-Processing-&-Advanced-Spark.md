@@ -59,12 +59,15 @@ Delta Lake is foundational to many production-grade Lakehouse architectures (esp
 Transaction Log
 1. Stored at _delta_log/, consists of JSON + Parquet checkpoints.
 2. Guarantees ACID properties using optimistic concurrency control.
+   
 Time Travel
 1. Access historical versions using:
 ```df = spark.read.format("delta").option("versionAsOf", 2).load(path)```
+
 Merge (Upserts)
 1. Use DeltaTable API to do MERGE (update if matched, insert otherwise).
 2. Schema evolution support with mergeSchema = true.
+   
 OPTIMIZE + ZORDER
 1. OPTIMIZE compacts small files.
 2. ZORDER helps skip irrelevant files during read (especially for filtering on common keys).
@@ -73,6 +76,7 @@ OPTIMIZE + ZORDER
 
 #### Why it Matters:
 As a Staff Engineer, you're expected to define how pipelines are triggered, monitored, and recovered.
+
 What to Learn:
 1. Databricks Workflows: Built-in scheduler for jobs using notebooks or scripts.
 2. Airflow DAGs:
@@ -83,76 +87,32 @@ What to Learn:
 ### Real-World Project for Hands-On Practice
 
 Use Case:
-
-Large Retail Order Processing System
-
+1. Large Retail Order Processing System
 Data Sources:
-
-Batch ingestion of orders, customers, and inventory.
-
-
+1. Batch ingestion of orders, customers, and inventory.
 Pipeline Stages:
-
 1. Ingest parquet files into raw Delta Lake table.
-
-
 2. Apply data skew logic (simulate high-volume customer).
-
-
 3. Broadcast join with customer data.
-
-
 4. Merge daily updates using Delta’s upsert feature.
-
-
 5. Optimize and ZORDER on commonly filtered columns (customer_id, order_date).
-
-
-6. Databricks Workflow triggers:
-
-load_raw_data notebook
-
-merge_updates notebook
-
-Notification or downstream task
-
-
-
+6. Databricks Workflow triggers
 
 Key Goals:
 
-Prove your skill in identifying bottlenecks.
-
-Demonstrate mastery of Spark/Delta/Workflows.
+1. Prove your skill in identifying bottlenecks.
+2. Demonstrate mastery of Spark/Delta/Workflows.
 
 Prepare for interview questions like:
-
-“How do you handle long-running joins?”
-
-“How do you ensure consistency in concurrent writes?”
-
-“Can you walk through your orchestration strategy?”
-
-
-
-
----
+1. How do you handle long-running joins?
+2. How do you ensure consistency in concurrent writes?
+3. Can you walk through your orchestration strategy?”
 
 Interview Questions You Should Be Able to Answer
 
 1. How do you debug a skewed Spark job?
-
-
 2. What are the different join strategies in Spark?
-
-
 3. Explain how Delta Lake provides ACID transactions.
-
-
 4. How do you manage schema changes in production pipelines?
-
-
 5. How would you design a real-time/near-real-time order processing pipeline?
-
-
 6. How do you avoid small files in Delta Lake?
