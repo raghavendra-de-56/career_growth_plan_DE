@@ -21,7 +21,7 @@ Partitioning vs. Bucketing
 
 #### Catalyst Optimizer
 1. Logical and physical plan optimizations.
-df.explain(True) shows the transformations Spark applies before execution.
+```df.explain(True)``` shows the transformations Spark applies before execution.
 
 #### Tungsten Execution Engine
 1. Improves memory use with off-heap storage.
@@ -56,19 +56,19 @@ A single customer generates 60% of your order data. During joins, a single execu
 #### Why it Matters:
 Delta Lake is foundational to many production-grade Lakehouse architectures (especially in Databricks).
 #### Concepts to Master:
-Transaction Log
+##### Transaction Log
 1. Stored at _delta_log/, consists of JSON + Parquet checkpoints.
 2. Guarantees ACID properties using optimistic concurrency control.
    
-Time Travel
+##### Time Travel
 1. Access historical versions using:
 ```df = spark.read.format("delta").option("versionAsOf", 2).load(path)```
 
-Merge (Upserts)
+##### Merge (Upserts)
 1. Use DeltaTable API to do MERGE (update if matched, insert otherwise).
 2. Schema evolution support with mergeSchema = true.
    
-OPTIMIZE + ZORDER
+##### OPTIMIZE + ZORDER
 1. OPTIMIZE compacts small files.
 2. ZORDER helps skip irrelevant files during read (especially for filtering on common keys).
 
