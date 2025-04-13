@@ -173,10 +173,15 @@ Governance Solution:
 
 ### Governance Checklist
 Data Inventory: Define metadata standards (ownership, tags, glossary, lifecycle)
+
 RBAC/ABAC: Collabrate with security to map users/groups to roles/permissions
+
 Goverance Automation: Embed tagging and ACLs into CI/CD pipelines using terraform
+
 Tool Integration: Integrate Unity catalog with Collibra/DataHub/OpenMetadata
+
 Policy Evangelism: Docuemnt and socialize policies across squads (wiki, workshops)
+
 Monitoring: Implement alertsfor unauthorized acess, PII drift, or stale data
 
 
