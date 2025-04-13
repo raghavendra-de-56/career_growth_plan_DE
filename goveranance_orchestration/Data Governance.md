@@ -79,13 +79,14 @@ Maintain searchable, tagged, documented datasets and owners
 
 #### Set Up Access Control
 
-Example: Table-Level Access Control
+Example: 
+Table-Level Access Control
 ```
 -- Grant SELECT on the entire table to analysts
 GRANT SELECT ON TABLE supply_chain.orders TO analyst_group;
-
+```
 Column-Level Security (CLS):
-
+```
 -- Allow analysts to only see certain columns
 GRANT SELECT(order_id, product_id, order_date)
 ON TABLE supply_chain.orders
@@ -152,18 +153,15 @@ CREATE RECIPIENT vendor_team USING IDENTITY 'email@partner.com';
 GRANT USAGE ON SHARE vendor_share TO RECIPIENT vendor_team;
 ```
 Audit Logs (in Unity Catalog or CloudTrail):
-
-Track GRANT, SELECT, CREATE, ALTER via Unity Catalog audit logs.
-
-Pipe logs to Lakehouse or use Databricks audit log APIs.
+1. Track GRANT, SELECT, CREATE, ALTER via Unity Catalog audit logs.
+2. Pipe logs to Lakehouse or use Databricks audit log APIs.
 
 ### Real-World Scenario
 
 #### Context:
 
-You manage product forecast and inventory datasets.
-
-Access is needed across regions (US, EU), but with restrictions on customer-related fields.
+1. You manage product forecast and inventory datasets.
+2. Access is needed across regions (US, EU), but with restrictions on customer-related fields.
 
 Governance Solution:
 1. Tag customer_email and address columns as PII
@@ -172,3 +170,13 @@ Governance Solution:
 4. Share forecast data with partners using Delta Sharing
 5. Implement view masking for analysts
 6. Schedule data retention cleanup every 90 days
+
+### Governance Checklist
+Data Inventory: Define metadata standards (ownership, tags, glossary, lifecycle)
+RBAC/ABAC: Collabrate with security to map users/groups to roles/permissions
+Goverance Automation: Embed tagging and ACLs into CI/CD pipelines using terraform
+Tool Integration: Integrate Unity catalog with Collibra/DataHub/OpenMetadata
+Policy Evangelism: Docuemnt and socialize policies across squads (wiki, workshops)
+Monitoring: Implement alertsfor unauthorized acess, PII drift, or stale data
+
+
