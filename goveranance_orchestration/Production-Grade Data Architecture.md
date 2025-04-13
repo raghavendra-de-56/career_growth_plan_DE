@@ -1,6 +1,6 @@
-Production-Grade Data Architecture
+## Production-Grade Data Architecture
 
-Here’s how everything fits together:
+### Here’s how everything fits together:
 
 ```
 [IoT Devices]
