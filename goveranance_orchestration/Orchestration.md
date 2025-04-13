@@ -36,6 +36,14 @@ Think of orchestration as the conductor of a data symphony — directing when an
 3. Monitor orchestration logs centrally (e.g., Airflow logs via S3/Datadog)
 4. Store orchestration state externally (e.g., Airflow metadata DB)
 
+### Tools for Orchestration
+Tools: Strengths: Use Case
+Apache Airflow: Code-first DAGs, highly flexible: Complex DAGs, integrations, on-prem/cloud
+Databricks Workflows: Notebook orchestration, native to DB: Databricks pipelines, ML
+Dagster: STring Type checks, developer experience: Declarative oerchestration on with testing
+Perfect: Asynch execution, great UI, pythonic: Hybrid clod workflows
+AWS step Functions: Serverless, no-code DAGs: Microservices orchestration
+
 ## Designing resilient, observable, and scalable workflows
 
 1. Integrating across data lakes, streaming systems, and external APIs
@@ -82,6 +90,15 @@ Use built-in UIs (Airflow, Databricks) and integrate with PagerDuty, Slack, etc.
 
 Metrics to track: DAG duration, task retries, SLA misses, data freshness.
 
+## Best Practices
+
+1. Design DAGs for Modularity: Reuse components across pipelines.
+2. Standardize Retry & Alerting Logic: Use wrappers or decorators.
+3. Abstract Pipeline Configuration: Use YAML/JSON to drive DAG generation.
+4. Build Observability In: Emit metrics from all tasks.
+5. Think in SLAs and Data Contracts: Ensure pipelines meet downstream expectations.
+6. Platform Mindset: Enable others to build DAGs via templates, APIs, or UI forms.
+
 ## Real-World Orchestration Examples
 
 ### 1. Daily Supply Chain Data Ingestion
@@ -93,16 +110,6 @@ Metrics to track: DAG duration, task retries, SLA misses, data freshness.
 5. Transform into Delta Lake format (Task C)
 6. Load into Snowflake for planning tools (Task D)
 7. Airflow manages the job, with email alert if failure occurs.
-
-## Best Practices
-
-1. Design DAGs for Modularity: Reuse components across pipelines.
-2. Standardize Retry & Alerting Logic: Use wrappers or decorators.
-3. Abstract Pipeline Configuration: Use YAML/JSON to drive DAG generation.
-4. Build Observability In: Emit metrics from all tasks.
-5. Think in SLAs and Data Contracts: Ensure pipelines meet downstream expectations.
-6. Platform Mindset: Enable others to build DAGs via templates, APIs, or UI forms.
-
 
 ### 2. IoT Stream + Batch Hybrid Pipeline
 
