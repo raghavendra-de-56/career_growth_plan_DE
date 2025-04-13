@@ -194,8 +194,13 @@ Business: logical flow from business terms (e.g., customer orders) to metrics
 
 ## Summary Checklist
 Area: Mist-Haves
+
 Auto Lineage: Unit Catalog DLT, dbt
+
 Manual Lineage: Spark job tagging, metadata columns
+
 Impact Analysis Tools: Unit Catalog Lineage UI, DataHub, OpenLineage
+
 Documentation: Linok lineage to Confluence / Data Catalog
+
 Access Logs + Auditing: Track data usage and lineage through audit logs.
