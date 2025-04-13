@@ -175,3 +175,83 @@ with DAG("iot_pipeline", schedule_interval="@hourly", start_date=datetime(2024, 
     ingest >> validate >> transform
 
 ```
+## Principles of Production-Grade Data Architecture
+
+1. Modularity: Design loosely-coupled data components
+2. Scalability: Ensure architecture supports horizontal scaling
+3. Observability: Add logs, metrics, data quality checks
+4. Governance: Use Unity Catalog or equivalent for access and metadata
+5. Lineage: Track where data comes from and how it's transformed
+6. Security: Column-level encryption, tokenization, IAM
+
+## Pipeline Architecture Example (Batch + Stream)
+```
+# Simulated: IoT Ingestion Layer
+# Real-time ingestion using Spark Structured Streaming
+
+from pyspark.sql.functions import from_json, col
+from pyspark.sql.types import StructType, StringType, DoubleType
+
+schema = StructType() \
+    .add("device_id", StringType()) \
+    .add("timestamp", StringType()) \
+    .add("temperature", DoubleType()) \
+    .add("humidity", DoubleType())
+
+raw_stream = (spark.readStream
+    .format("kafka")
+    .option("kafka.bootstrap.servers", "localhost:9092")
+    .option("subscribe", "iot-events")
+    .load())
+
+parsed_stream = (raw_stream
+    .selectExpr("CAST(value AS STRING)")
+    .select(from_json(col("value"), schema).alias("data"))
+    .select("data.*"))
+
+# Write to bronze table (raw data)
+(parsed_stream.writeStream
+    .format("delta")
+    .outputMode("append")
+    .option("checkpointLocation", "/tmp/iot_chk")
+    .start("/mnt/datalake/bronze/iot"))
+```
+
+## Data Governance and Lineage using Unity Catalog
+
+```
+-- Enable Unity Catalog table tracking
+USE CATALOG main;
+
+-- Example table
+CREATE TABLE iot_bronze (
+    device_id STRING,
+    timestamp TIMESTAMP,
+    temperature DOUBLE,
+    humidity DOUBLE
+)
+COMMENT 'Raw sensor data from IoT devices';
+
+-- Add tags for metadata management
+ALTER TABLE iot_bronze SET TAGS ('source' = 'iot-sensors', 'sensitivity' = 'low');
+
+-- Use system.access.audit or lineage views for governance
+SELECT * FROM system.access.audit WHERE object_name = 'iot_bronze';
+```
+## Airflow DAG for Batch Layer Aggregation
+
+```
+# Aggregate IoT bronze data to silver layer using Airflow
+
+from airflow import DAG
+from airflow.operators.bash_operator import BashOperator
+from datetime import datetime
+
+dag = DAG('silver_aggregation', start_date=datetime(2023,1,1), schedule_interval='@hourly')
+
+aggregate = BashOperator(
+    task_id='aggregate_temp',
+    bash_command='databricks jobs run-now --job-id 1234',
+    dag=dag
+)
+```
