@@ -153,3 +153,132 @@ Create shared dimensions (e.g., Date, Customer, Product).
 Facts:
 
 sales_fact, inventory_fact
+
+### Designing Data Models for Shared Dimensions (e.g., User Dimension)
+
+Question:
+
+You need to support multiple product teams consuming a shared user dimension. How do you design the data model to support governance, versioning, and schema evolution?
+
+Answer:
+
+Key Considerations:
+
+Domain Ownership: Define ownership (e.g., Customer Data Platform team).
+
+Data Contracts: Use contract-first design to define what attributes are exposed to consumers.
+
+Schema Versioning: Maintain version-controlled schemas (e.g., via Unity Catalog or Schema Registry).
+
+Backward Compatibility: Use additive changes; avoid dropping/changing types.
+
+Column Lineage & Auditing: Track provenance of fields like email, country, etc.
+
+Architecture:
+
+Store the user dimension as a Delta Table under Unity Catalog.
+
+Use an internal Gold layer for curated full user info.
+
+Expose a subset of attributes through views or materialized tables for each consuming team.
+
+Example in PySpark:
+```
+# Add new attribute with versioning
+from pyspark.sql.functions import current_timestamp
+
+user_df = (
+    raw_user_df
+    .withColumn("ingestion_ts", current_timestamp())
+    .withColumn("version", lit(2))  # Example: version field
+)
+
+user_df.write.format("delta").mode("overwrite").saveAsTable("gold.user_dim_v2")
+```
+What Interviewers Look For:
+
+Thought process around ownership and breaking silos.
+
+How you manage change over time without disrupting consumers.
+
+Real examples of versioning and contracts.
+ 
+### Modeling for GDPR Compliance
+
+Question:
+How would you model data to support GDPR compliance (e.g., deletion, user consent, audit trails)?
+
+Answer:
+
+Modeling Techniques:
+
+PII Isolation: Store PII (email, phone) in a separate table with controlled access.
+
+Soft Deletes: Maintain a deleted_flag to logically remove user data.
+
+Consent Table: Model consent as a dimension (user_id, consent_type, timestamp).
+
+Delta Lake Change Data Feed (CDF): Use for tracking changes and deletions.
+
+Tagging & Row-Level Access: Unity Catalog provides masking policies and column-level tags.
+
+
+Example in PySpark:
+```
+# GDPR-compliant delete
+from delta.tables import DeltaTable
+
+user_table = DeltaTable.forName(spark, "gold.user_dim")
+user_table.delete("user_id = 'abc123'")  # Actual deletion when required
+
+# Consent tracking
+consent_df = spark.createDataFrame([
+    {"user_id": "abc123", "consent_type": "email_marketing", "timestamp": "2024-04-01"}
+])
+consent_df.write.mode("append").saveAsTable("gold.user_consent_dim")
+```
+What Interviewers Look For:
+
+Awareness of compliance requirements.
+
+How you've designed models to delete, mask, or restrict sensitive data.
+
+### 3. Multi-Fact Star Schema Design
+
+Question:
+
+What’s your approach to multi-fact schemas? Can you walk through a case where you used bridge tables or conformed dimensions?
+
+Answer:
+
+Use Case:
+
+You have sales_fact (daily sales) and inventory_fact (stock levels).
+
+Both reference the product_dim, but with different granularities.
+
+Design Strategy:
+
+Conformed Dimensions: Shared product_dim, location_dim, etc.
+
+Bridge Tables: Use when many-to-many exists (e.g., product-campaign relationships).
+
+Aggregation Handling: Model grain explicitly — e.g., sales_fact is daily, inventory_fact is hourly.
+
+Example Star Schema:
+```
+            +--------------+
+            | product_dim  |
+            +--------------+
+                  |
+     +------------+-----------+
+     |                        |
++------------+         +----------------+
+| sales_fact |         | inventory_fact |
++------------+         +----------------+
+```
+What Interviewers Look For:
+
+Modeling multiple business processes in one warehouse.
+
+Handling dimensional consistency across facts.
