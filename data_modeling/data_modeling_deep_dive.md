@@ -122,4 +122,125 @@ GROUP BY dp.category, dd.month
 3. Optimize queries using materialized views or data marts
 4. Build data contracts between fact/dimension providers and consumers
 
+Advanced dimensional modeling techniques—aggregate fact tables, bridge tables, and multi-fact star schemas—are essential for designing scalable, performant, and flexible analytics solutions. These are critical for production-grade data modeling.
+
+### Aggregate Fact Tables 
+
+What it is:
+
+An aggregate fact table stores pre-summarized metrics (e.g., daily, weekly, monthly totals), which significantly improves query performance.
+
+Why it matters:
+
+Avoids scanning large raw fact tables for each query.
+
+Powers dashboards and KPIs with low latency.
+
+Example:
+
+This table may be derived from a base fact_sales table.
+
+How to build (PySpark):
+```
+agg_sales = spark.sql("""
+SELECT
+  product_id,
+  date_id,
+  SUM(quantity) AS total_quantity,
+  SUM(revenue) AS total_revenue
+FROM fact_sales
+GROUP BY product_id, date_id
+""")
+
+agg_sales.write.format("delta").mode("overwrite").saveAsTable("fact_sales_daily_agg")
+```
+
+### Bridge Tables
+
+What it is:
+
+A bridge table is used to model many-to-many relationships between a fact table and a dimension.
+
+Why it matters:
+
+Dimensional modeling typically assumes 1-to-many relationships, but real-world data isn’t always that clean.
+
+Real-world Example:
+
+A customer can belong to multiple loyalty programs, and a loyalty program can include many customers.
+
+Tables:
+
+dim_customer
+
+dim_loyalty_program
+
+bridge_customer_program (customer_id, program_id)
+
+
+Bridge Table Sample:
+
+Querying (SQL):
+```
+SELECT
+  lp.program_name,
+  COUNT(DISTINCT fs.customer_id) AS unique_customers,
+  SUM(fs.revenue) AS total_revenue
+FROM fact_sales fs
+JOIN bridge_customer_program bcp ON fs.customer_id = bcp.customer_id
+JOIN dim_loyalty_program lp ON bcp.program_id = lp.program_id
+GROUP BY lp.program_name
+```
+
+### Multi-Fact Star Schema
+
+What it is:
+
+A schema with multiple fact tables that may share common dimensions (conformed dimensions).
+
+Why it matters:
+
+You often have different types of business processes—orders, shipments, inventory, returns—each modeled as separate fact tables.
+
+Example:
+
+Fact Tables:
+
+fact_orders (order_id, product_id, date_id, quantity_ordered)
+
+fact_shipments (shipment_id, product_id, date_id, quantity_shipped)
+
+Shared Dimensions:
+
+dim_product, dim_date, dim_customer
+
+This allows you to:
+
+Compare orders vs. shipments
+
+Analyze delays or fulfillment rates
+
+
+Visualization:
+```
+                +------------+
+                | dim_product|
+                +------------+
+                      |
++-------------+   +-------------+   +-------------+
+| fact_orders |   | fact_returns|   | fact_shipments |
++-------------+   +-------------+   +-------------+
+                      |
+                +------------+
+                |  dim_date  |
+                +------------+
+```
+
+You are expected to:
+
+1. Build data models that power self-service analytics for thousands of users.
+2. Make performance trade-offs using aggregation or denormalization.
+3. Handle complex relationships (many-to-many, temporal joins).
+4. Own data contract enforcement across multi-source facts and conformed dimensions.
+
 
