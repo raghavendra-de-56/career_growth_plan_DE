@@ -135,3 +135,58 @@ Mention Avro + Schema Registry as the most used combo.
 Talk about schema evolution testing in CI/CD.
 
 Highlight how you alert on incompatible changes using unit tests or Great Expectations.
+
+
+### How do you ensure backward and forward compatibility in schema evolution in a real-time Kafka-based pipeline?
+
+Answer:
+
+To manage schema evolution in real-time pipelines, follow these principles:
+
+Use a Schema Registry (e.g., Confluent Schema Registry or Databricks Unity Catalog)
+
+Define compatibility rules:
+
+Backward: New consumers can read old data.
+
+Forward: Old consumers can read new data.
+
+Full: Both forward and backward.
+
+Add only optional fields or fields with default values in schema changes.
+
+Practical Code (PySpark + Kafka + Schema Registry):
+```
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+from pyspark.sql.functions import from_json, col
+
+# Step 1: Define expected schema (latest version)
+expected_schema = StructType([
+    StructField("user_id", StringType()),
+    StructField("event_type", StringType()),
+    StructField("event_ts", StringType()),
+    StructField("device_type", StringType(), True)  # newly added field
+])
+
+# Step 2: Read from Kafka topic
+df_raw = (spark.readStream
+    .format("kafka")
+    .option("kafka.bootstrap.servers", "<broker>")
+    .option("subscribe", "user_events")
+    .load())
+
+# Step 3: Deserialize JSON with schema
+df_parsed = df_raw.selectExpr("CAST(value AS STRING)").select(
+    from_json(col("value"), expected_schema).alias("parsed")
+).select("parsed.*")
+
+# Step 4: Optional - Validate schema at runtime
+df_parsed.printSchema()
+```
+Tips for Interview:
+
+Mention Avro + Schema Registry as the most used combo.
+
+Talk about schema evolution testing in CI/CD.
+
+Highlight how you alert on incompatible changes using unit tests or Great Expectations.
