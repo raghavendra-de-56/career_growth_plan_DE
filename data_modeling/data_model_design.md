@@ -1,4 +1,4 @@
-1. Multi-Tenancy Data Model Design in a SaaS Platform
+### Multi-Tenancy Data Model Design in a SaaS Platform
 
 Answer:
 
