@@ -17,3 +17,13 @@
 4. Data Modeling Patterns:
     - Normalization: Organizing data to minimize redundancy and improve data integrity.
     - Denormalization: Optimizing data for query performance by allowing some redundancy.
+
+Best practice:
+
+1. Follow data modeling standards and conventions: Ensure consistency and clarity in data model design by adhering to established naming conventions, notation standards, and modeling guidelines.
+
+2. Use data modeling tools to document and manage data models: Utilize specialized tools (e.g., ERwin, dbt, DataGrip) to create, document, and maintain data models, ensuring version control, collaboration, and accuracy.
+
+3. Collaborate with data engineers, analysts, and scientists: Work closely with stakeholders to understand requirements, share knowledge, and ensure data models meet business needs, are technically feasible, and support analytics and insights.
+
+4. Continuously monitor and improve data models: Regularly review and refine data models to ensure they remain relevant, efficient, and effective, adapting to changing business needs, data volumes, and performance requirements.
