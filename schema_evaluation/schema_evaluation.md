@@ -209,7 +209,5 @@ schema2 = json.loads(df2.schema_json)
 
 from deepdiff import DeepDiff
 diff = DeepDiff(schema1, schema2, ignore_order=True)
-```
-
-
 print(diff)
+```
