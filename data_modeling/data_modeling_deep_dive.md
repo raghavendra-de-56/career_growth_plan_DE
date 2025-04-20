@@ -31,7 +31,7 @@ One fact table connected to multiple dimension tables directly.
 Easy for reporting tools and query optimization.
 
 ```
-+-----------+
+            +-----------+
             | Customer  |
             +-----------+
                   |
