@@ -8,7 +8,9 @@ Let’s dive deep — with theory + practical PySpark/Delta examples.
 The architecture is structured into three layers:
 
 Bronze: Raw ingestion layer. Example: Raw IoT, logs, JSON, CSV, API responses
+
 Silver: Cleaned, enriched data (joins, filters). Example: Flattened tables, dimension tables
+
 Gold: Business-level aggregates, marts, facts. Example: KPIs, metric, dashboards, fact tables
 
 # Mapping Medallion Layers to Dimensional Modeling
