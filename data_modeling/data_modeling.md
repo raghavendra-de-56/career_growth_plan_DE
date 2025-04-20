@@ -1,3 +1,4 @@
+### Concepts: ###
 1. Data Modeling Fundamentals:
     - Entities: Represent real-world objects or concepts (e.g., customers, orders).
     - Attributes: Describe characteristics of entities (e.g., customer name, order date).
@@ -18,7 +19,7 @@
     - Normalization: Organizing data to minimize redundancy and improve data integrity.
     - Denormalization: Optimizing data for query performance by allowing some redundancy.
 
-*** Best practice: ***
+### Best practice: ###
 
 1. Follow data modeling standards and conventions: Ensure consistency and clarity in data model design by adhering to established naming conventions, notation standards, and modeling guidelines.
 
@@ -30,7 +31,7 @@
 
 By following these best practices, data engineers can create robust, scalable, and maintainable data solutions that support business success.
 
-*** Technical skill: ***
+### Technical skill: ###
 
 1. Entity-Relationship Modeling (ERM):
     - A technique for designing and representing data structures, focusing on entities, attributes, and relationships.
