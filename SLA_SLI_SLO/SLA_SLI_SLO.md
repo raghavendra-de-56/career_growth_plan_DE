@@ -1,3 +1,19 @@
+## SLA (Agreement)
+1. Description: Contract between teams on expectations
+2. Example: Data must arrive by 8 AM daily
+
+## SLO (Objective)
+1. Description: Internal goal that drives reliability
+2. Example: 99% of daily jobs complete in 5 min
+
+## SLI (Indicator)
+1. Description: Metric to track the objective
+2. Example: Job latency, data accuracy %
+   
+
+
+
+
 ### SLA/SLI/SLO Monitoring in Databricks Workflows
 
 Goal: Build a simple framework to measure data freshness and SLA compliance for a Silver table (e.g., sales), and publish SLI/SLO metrics to a Delta-based monitoring table.
