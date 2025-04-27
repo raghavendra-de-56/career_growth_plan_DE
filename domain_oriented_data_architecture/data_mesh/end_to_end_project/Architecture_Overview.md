@@ -9,6 +9,8 @@
 |Orchestration| Airflow DAG to manage ingestion and quality checks|
 |Monitoring|Databricks dashboards for SLA monitoring|
 
+<img width="327" alt="image" src="https://github.com/user-attachments/assets/0fb68c57-4e31-42b6-84e1-f773e44b5ace" />
+
 
 ## Summary Diagram
 ```
