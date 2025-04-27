@@ -31,4 +31,18 @@ Example:
 |Observability| Metrics on freshness, volume, schema drift|
 
 
+### Domain-Oriented Architecture
+
+1. Break monolithic data lakes into domain-specific Lakehouses.
+2. Use Unity Catalog for multi-domain access control.
+3. Each team should be able to deploy independently using CI/CD pipelines.
+
+### Platform Capabilities for Data Mesh
+
+1. Provisioning Infrastructure: Terraform scripts for new pipelines.
+2. Metadata Management: Unified catalog (Databricks Unity Catalog, AWS Glue).
+3. Monitoring and Logging: Centralized monitoring dashboards.
+4. Versioning: Dataset schema versioning and backward compatibility handling.
+
+
 
