@@ -1,5 +1,6 @@
 ## Core Concepts to Master
 
---------------------
-|Topic :-: Description |
----------------------
+|------|-------------|
+|Topic | Description |
+|------|-------------|
+|Principles| Federated governance domain ownership, product thinking for data |
