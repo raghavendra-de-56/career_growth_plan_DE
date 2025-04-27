@@ -1,5 +1,5 @@
 ## Core Concepts to Master
 
 --------------------
-|Topic | Description |
+|Topic :-: Description |
 ---------------------
