@@ -9,3 +9,15 @@
 |Orchestration| Airflow DAG to manage ingestion and quality checks|
 |Monitoring|Databricks dashboards for SLA monitoring|
 
+
+## Summary Diagram
+```
+[S3 Orders] --> [Bronze Layer (raw ingest)] --> [Silver Layer (data validated)] --> [Gold Layer (business model)]
+      +                                                      +
+    [Kafka]                                            [Data Quality Failures]
+                                                         |
+                                                      [Alerts via Slack]
+                                                         |
+                                                      [Lineage tracked in Unity Catalog]
+
+```
