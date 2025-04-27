@@ -78,7 +78,7 @@ GRANT SELECT (customer_id, total_sales) ON TABLE retail_catalog.gold.fact_sales 
 ```
 This ensures only authorized users can view sensitive customer or sales data.
 
-# Summary: Unity Catalog Setup
+### Summary: Unity Catalog Setup
 
 |Feature| Benefit|
 |-------|--------|
