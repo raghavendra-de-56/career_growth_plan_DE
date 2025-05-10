@@ -171,12 +171,6 @@ query = parsed_df.writeStream \
 
 7. Summary
 
-Feature	Lambda	Kappa
+![image](https://github.com/user-attachments/assets/8e543340-5da1-406c-a8dc-1a5502318f45)
 
-Architecture	Batch + Real-time	Pure stream-based
-Complexity	High	Lower
-Reprocessing	Batch recompute	Stream replay
-Use Case Fit	Historical + Real-time views	Real-time first systems
-Data Storage	HDFS + Kafka	Kafka (log as system of record)
 
-![image](https://github.com/user-attachments/assets/e75ae352-985f-47c2-9585-e49aa9556ccd)
