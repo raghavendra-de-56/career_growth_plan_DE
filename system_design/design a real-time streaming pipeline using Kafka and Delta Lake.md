@@ -46,8 +46,8 @@ parsed_df.writeStream \
 
 ### What are the key challenges in real-time systems and how do you handle them?
 
-Key Challenges & Solutions: 
-|------------|---------|
+Key Challenges & Solutions:
+
 | Challenge | Solution | 
 |----------|----------| 
 | Data Skew | Use partitioning wisely and broadcast joins. |
