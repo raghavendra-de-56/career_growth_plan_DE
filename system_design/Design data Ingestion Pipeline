@@ -1,4 +1,5 @@
 ### Data Ingestion Pipeline
+
 Design a data ingestion pipeline to collect data from multiple sources (e.g., APIs, databases, files) and load it into a centralized data warehouse (e.g., Amazon Redshift, Google BigQuery).
 
 System Design
